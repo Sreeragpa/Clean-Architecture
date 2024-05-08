@@ -11,6 +11,7 @@ export class ProductController{
     async onCreateProduct(req: Request, res: Response, next: NextFunction){
         try {
             const body = req.body;
+
             // Buisness Logic is in interactor
             const data = await this.interactor.createProduct(body)
 
@@ -21,10 +22,22 @@ export class ProductController{
     }
     async onGetProduct(req:Request, res: Response, next: NextFunction){
         try {
-            
+            const data = await this.interactor.getProduct(5,1)
         } catch (error) {
             next(error)
         }
     }
-    async onUpdateStock(req:Request, res: Response, next: NextFunction){}
+    async onUpdateStock(req:Request, res: Response, next: NextFunction){
+        try {
+            const id = parseInt(req.params.id);
+            const stock = req.body.stock;
+
+            const data = await this.interactor.updateStock(id,stock);
+
+            res.json(data);
+
+        } catch (error) {
+            next(error)
+        }
+    }
 }

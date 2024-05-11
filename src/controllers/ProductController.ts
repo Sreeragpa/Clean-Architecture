@@ -1,20 +1,19 @@
 import { NextFunction, Request, Response } from "express";
-import { IProductInterator } from "../interfaces/IProductInteractor";
+import { IProductUsecase } from "../interfaces/usecase/IProduct.usecase";
 
 export class ProductController{
 
-    private interactor: IProductInterator
+    private productUsecase: IProductUsecase
 
-    constructor(interactor: IProductInterator){
-        this.interactor = interactor
+    constructor(productUsecase: IProductUsecase){
+        this.productUsecase = productUsecase
     }
     async onCreateProduct(req: Request, res: Response, next: NextFunction){
         try {
             const body = req.body;
 
             // Buisness Logic is in interactor
-            const data = await this.interactor.createProduct(body)
-
+            const data = await this.productUsecase.createProduct(body)
             res.json(data)
         } catch (error) {
             next(error)
@@ -22,7 +21,7 @@ export class ProductController{
     }
     async onGetProduct(req:Request, res: Response, next: NextFunction){
         try {
-            const data = await this.interactor.getProduct(5,1)
+            const data = await this.productUsecase.getProduct(5,1)
         } catch (error) {
             next(error)
         }
@@ -32,7 +31,7 @@ export class ProductController{
             const id = parseInt(req.params.id);
             const stock = req.body.stock;
 
-            const data = await this.interactor.updateStock(id,stock);
+            const data = await this.productUsecase.updateStock(id,stock);
 
             res.json(data);
 
